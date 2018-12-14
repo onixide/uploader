@@ -7,6 +7,7 @@ class Uploader {
         this.thumbnails = this.elementDiv.querySelector(".uploader__thumbnails-container");
         this.tip = this.elementDiv.querySelector(".uploader__tip");
         this.filelist = [];
+
     }
 
     addHover() {
@@ -20,47 +21,72 @@ class Uploader {
     thumbnailsGenerator(file) {
         let fileReader = new FileReader();
         let image = new Image();
+
         image.classList.add("thumbnail-img");
 
         fileReader.onload = function () {
             image.src = fileReader.result;
         }
+
         fileReader.readAsDataURL(file);
-        console.log(this);
         this.thumbnails.appendChild(image);
     }
 
-    addToUpload(file) {
-        this.filelist.push(file);
-        console.log(this.filelist);
+    addFileToUpload(file) {
+        console.log(file);
+        this.formData.append("img", file);
+        console.log(this.formData);
+    }
+
+    sendData() {
+        console.log("send data");
+        console.log(this.formData);
+        fetch('http://localhost:3001', {
+            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            mode: "cors", // no-cors, cors, *same-origin
+            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: "same-origin", // include, *same-origin, omit
+            headers: {
+                "Content-Type": "application/json; charset=utf-8",
+                // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            redirect: "follow", // manual, *follow, error
+            referrer: "no-referrer", // no-referrer, *client
+            body: this.formData, // body data type must match "Content-Type" header
+        })
+        .then(response => console.log(response.json())); // parses response to JSON
     }
 
 
-    init() {
-        const self = this;
 
-        this.dropArea.addEventListener("dragenter", this.addHover);
-        this.dropArea.addEventListener("dragleave", this.removeHover);
-        this.dropArea.addEventListener("dragover", function (e) {
-            e.preventDefault();
-        });
-        this.dropArea.addEventListener("drop", function (e) {
-            let files;
-            e.preventDefault();
-            e.stopPropagation();
+init() {
+    const self = this;
 
-            files = e.dataTransfer.files;
+    this.dropArea.addEventListener("dragenter", this.addHover);
+    this.dropArea.addEventListener("dragleave", this.removeHover);
+    this.dropArea.addEventListener("dragover", function (e) {
+        e.preventDefault();
+    });
+    this.dropArea.addEventListener("drop", function (e) {
+        let files;
+        e.preventDefault();
+        e.stopPropagation();
 
-            [...files].forEach(file => {
-                if (file.type.match("jpeg")) {
-                   self.thumbnailsGenerator(file);
-                   self.addToUpload(file);
-                 }
-            })   
-            console.log(files);   
-            this.classList.remove("uploader__drop-area--active");
-        });
-    }
+        files = e.dataTransfer.files;
+
+        [...files].forEach(file => {
+            if (file.type.match("jpeg")) {
+                self.thumbnailsGenerator(file);
+                self.addFileToUpload(file);
+            }
+        })
+
+        console.log(files);
+        this.classList.remove("uploader__drop-area--active");
+    });
+    this.sendButton.addEventListener("click", this.sendData);
+    this.formData = new FormData();
+}
 }
 
 

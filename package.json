@@ -1,0 +1,15 @@
+{
+  "name": "uploader",
+  "version": "1.0.0",
+  "description": "simple file uploader",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kamil Norowski",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.16.4"
+  }
+}

@@ -6,6 +6,7 @@ class Uploader {
         this.sendButton = this.elementDiv.querySelector(".uploader__button--send");
         this.thumbnails = this.elementDiv.querySelector(".uploader__thumbnails-container");
         this.tip = this.elementDiv.querySelector(".uploader__tip");
+        this.filelist = [];
     }
 
     addHover() {
@@ -29,7 +30,10 @@ class Uploader {
         this.thumbnails.appendChild(image);
     }
 
-
+    addToUpload(file) {
+        this.filelist.push(file);
+        console.log(this.filelist);
+    }
 
 
     init() {
@@ -49,7 +53,8 @@ class Uploader {
 
             [...files].forEach(file => {
                 if (file.type.match("jpeg")) {
-                    self.thumbnailsGenerator(file);
+                   self.thumbnailsGenerator(file);
+                   self.addToUpload(file);
                  }
             })   
             console.log(files);   

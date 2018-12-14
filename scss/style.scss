@@ -23,6 +23,12 @@
         
         }
     }
+    &__tip{
+        font-family: Arial, Helvetica, sans-serif;
+        font-weight: 700;
+        text-transform: uppercase;
+
+    }
     &__button--send {
         background-color: rgb(9, 155, 165);
         border: none;

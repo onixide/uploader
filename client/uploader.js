@@ -34,8 +34,8 @@ class Uploader {
 
     addFileToUpload(file) {
         console.log(file);
-        this.formData.append("img", file);
-        console.log(this.formData);
+        this.formData.append("img[]", file);
+        // console.log(Array.from(this.formData.keys));
     }
 
     sendData() {
@@ -52,7 +52,8 @@ class Uploader {
             },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
-            body: this.formData, // body data type must match "Content-Type" header
+            // body: this.formData, // body data type must match "Content-Type" header
+            body: "dupa", // body data type must match "Content-Type" header
         })
         .then(response => console.log(response.json())); // parses response to JSON
     }

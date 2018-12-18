@@ -2,11 +2,11 @@ class Uploader {
     constructor(elementDiv) {
         this.elementDiv = elementDiv;
         this.dropArea = this.elementDiv.querySelector(".uploader__drop-area");
-        console.log(this.dropArea);
         this.sendButton = this.elementDiv.querySelector(".uploader__button--send");
         this.thumbnails = this.elementDiv.querySelector(".uploader__thumbnails-container");
         this.tip = this.elementDiv.querySelector(".uploader__tip");
         this.filelist = [];
+        this.formData = new FormData();
 
     }
 
@@ -33,27 +33,33 @@ class Uploader {
     }
 
     addFileToUpload(file) {
-        console.log(file);
-        this.formData.append("img[]", file);
+        // console.log(file);
+        // let xxx = new Blob(file, { type: "image/jpeg" });
+        this.filelist.push({"file": file});
+        this.formData.append("myImage", file);
+        // console.log(this.filelist[0]);
+
         // console.log(Array.from(this.formData.keys));
     }
 
     sendData() {
-        console.log("send data");
-        console.log(this.formData);
+        // console.log("send data");
+        // console.log(this.formData);
+        // let dupa = { arr : [1, 2, 4]};
         fetch('http://localhost:3001', {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
             cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             // credentials: "same-origin", // include, *same-origin, omit
-            headers: {
-                "Content-Type": "application/json; charset=utf-8",
-                // "Content-Type": "application/x-www-form-urlencoded",
-            },
+            // headers: {
+            //     "Content-Type": "multipart/form-data"
+            //     // "Content-Type": "application/x-www-form-urlencoded"
+            //     // "Content-Type": undefined
+            // },
             redirect: "follow", // manual, *follow, error
             referrer: "no-referrer", // no-referrer, *client
-            // body: this.formData, // body data type must match "Content-Type" header
-            body: "dupa", // body data type must match "Content-Type" header
+            body: this.formData // body data type must match "Content-Type" header
+            // body: this.filelist[0] // body data type must match "Content-Type" header
         })
         .then(response => console.log(response.json())); // parses response to JSON
     }
@@ -82,11 +88,11 @@ init() {
             }
         })
 
-        console.log(files);
+        // console.log(files);
         this.classList.remove("uploader__drop-area--active");
     });
-    this.sendButton.addEventListener("click", this.sendData);
-    this.formData = new FormData();
+    this.sendButton.addEventListener("click", this.sendData.bind(this));
+   
 }
 }
 
@@ -108,14 +114,16 @@ init() {
 // </div>
 
 let x = document.querySelector("#uploader")
-console.log(x);
+// console.log(x);
 let aa = new Uploader(x);
 aa.init();
+// console.log(aa);
 
 let w = document.querySelector("#uploader2");
-console.log(w);
+// console.log(w);
 let bb = new Uploader(w);
 bb.init();
+// console.log(bb);
 
 
 

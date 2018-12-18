@@ -42,26 +42,29 @@ class Uploader {
         // console.log(Array.from(this.formData.keys));
     }
 
-    sendData() {
+    sendData(e) {
+        e.preventDefault();
         // console.log("send data");
         // console.log(this.formData);
         // let dupa = { arr : [1, 2, 4]};
         fetch('http://localhost:3001', {
             method: "POST", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
-            cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
             // credentials: "same-origin", // include, *same-origin, omit
             // headers: {
             //     "Content-Type": "multipart/form-data"
             //     // "Content-Type": "application/x-www-form-urlencoded"
             //     // "Content-Type": undefined
             // },
-            redirect: "follow", // manual, *follow, error
-            referrer: "no-referrer", // no-referrer, *client
+            // redirect: "follow", // manual, *follow, error
+            // referrer: "no-referrer", // no-referrer, *client
             body: this.formData // body data type must match "Content-Type" header
             // body: this.filelist[0] // body data type must match "Content-Type" header
         })
-        .then(response => console.log(response.json())); // parses response to JSON
+        .then(response => (response.json()))
+        .then(response => console.log(response))
+        .catch(error => console.log('error is', error));
     }
 
 
@@ -91,7 +94,12 @@ init() {
         // console.log(files);
         this.classList.remove("uploader__drop-area--active");
     });
-    this.sendButton.addEventListener("click", this.sendData.bind(this));
+    // this.sendButton.addEventListener("click", this.sendData.bind(this));
+    this.sendButton.addEventListener("click", function(e){
+      e.preventDefault();
+      this.sendData(e);
+    //   e.preventDefault();
+    }.bind(this));
    
 }
 }

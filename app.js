@@ -26,7 +26,7 @@ const storage = multer.diskStorage({
     fileFilter: function(req, file, cb){
       checkFileType(file, cb);
     }
-  }).single('myImage');
+  }).array('myImage');
   
   // Check File Type
   function checkFileType(file, cb){
@@ -61,7 +61,6 @@ app.post("/", (req, res) => {
     res.header('Access-Control-Allow-Headers', 'Content-Type')
 
     console.log('handling upload image');
-    console.log(req.file);
     upload(req, res, (err) => {
       if(err){
         console.log('first err', err);
@@ -69,23 +68,27 @@ app.post("/", (req, res) => {
           msg: err
         });
       } else {
-        if(req.file == undefined){
+          console.log(req.file);
+          console.log(req.files);
+        if(req.file === undefined && req.files === undefined){
           console.log('Error: No File Selected!')
           res.send({
             msg: 'Error: No File Selected!'
           });
         } else {
           console.log('File Uploaded!')
-          res.send({
-            msg: 'File Uploaded!',
-            file: `uploads/${req.file.filename}`
-          });
+          let x;
+          x = (req.file) ? req.file : req.files;
+        //   res.send({
+        //     // msg: 'File[s] Uploaded!',
+        //     // file: `uploads/${x.filename}`
+        //   });
         }
       }
     });
 
 
-    console.log(req.body);
+    // console.log(req.body);
     // res.json("xdzialas");
 
 });

@@ -5,9 +5,7 @@ class Uploader {
         this.sendButton = this.elementDiv.querySelector(".uploader__button--send");
         this.thumbnails = this.elementDiv.querySelector(".uploader__thumbnails-container");
         this.tip = this.elementDiv.querySelector(".uploader__tip");
-        this.filelist = [];
         this.formData = new FormData();
-
     }
 
     addHover() {
@@ -33,34 +31,14 @@ class Uploader {
     }
 
     addFileToUpload(file) {
-        // console.log(file);
-        // let xxx = new Blob(file, { type: "image/jpeg" });
-        this.filelist.push({"file": file});
         this.formData.append("myImage", file);
-        // console.log(this.filelist[0]);
-
-        // console.log(Array.from(this.formData.keys));
     }
 
-    sendData(e) {
-        e.preventDefault();
-        // console.log("send data");
-        // console.log(this.formData);
-        // let dupa = { arr : [1, 2, 4]};
+    sendData() {
         fetch('http://localhost:3001', {
-            method: "POST", // *GET, POST, PUT, DELETE, etc.
+            method: "PUT", // *GET, POST, PUT, DELETE, etc.
             mode: "cors", // no-cors, cors, *same-origin
-            // cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-            // credentials: "same-origin", // include, *same-origin, omit
-            // headers: {
-            //     "Content-Type": "multipart/form-data"
-            //     // "Content-Type": "application/x-www-form-urlencoded"
-            //     // "Content-Type": undefined
-            // },
-            // redirect: "follow", // manual, *follow, error
-            // referrer: "no-referrer", // no-referrer, *client
             body: this.formData // body data type must match "Content-Type" header
-            // body: this.filelist[0] // body data type must match "Content-Type" header
         })
         .then(response => (response.json()))
         .then(response => console.log(response))
@@ -96,9 +74,7 @@ init() {
     });
     // this.sendButton.addEventListener("click", this.sendData.bind(this));
     this.sendButton.addEventListener("click", function(e){
-      e.preventDefault();
       this.sendData(e);
-    //   e.preventDefault();
     }.bind(this));
    
 }
@@ -127,10 +103,10 @@ let aa = new Uploader(x);
 aa.init();
 // console.log(aa);
 
-let w = document.querySelector("#uploader2");
-// console.log(w);
-let bb = new Uploader(w);
-bb.init();
+// let w = document.querySelector("#uploader2");
+// // console.log(w);
+// let bb = new Uploader(w);
+// bb.init();
 // console.log(bb);
 
 
